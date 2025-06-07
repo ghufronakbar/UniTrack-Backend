@@ -27,7 +27,7 @@ const login = async (req, res) => {
             return res.status(400).json({ status: 400, message: 'Password salah' })
         }
         const accessToken = jwt.sign({ id: user.id }, JWT_SECRET)
-        return res.status(200).json({ status: 200, message: 'Login berhasil', data: { ...user, accessToken, role: user.role } })
+        return res.status(200).json({ status: 200, message: 'Login berhasil', data: { ...user, accessToken } })
     } catch (error) {
         console.log(error)
         return res.status(500).json({ status: 500, message: 'Terjadi Kesalahan Sistem!' })
@@ -41,17 +41,6 @@ const profile = async (req, res) => {
             where: {
                 id
             },
-            include: {
-                semesters: {
-                    include: {
-                        courses: {
-                            include: {
-                                tasks: true
-                            }
-                        }
-                    }
-                }
-            }
         })
         if (!data) {
             return res.status(404).json({ status: 404, message: 'Akun tidak ditemukan' })
@@ -94,7 +83,9 @@ const register = async (req, res) => {
             }
         })
 
-        return res.status(200).json({ message: "Berhasil membuat akun!", data: user })
+        const accessToken = jwt.sign({ id: user.id }, JWT_SECRET)
+
+        return res.status(200).json({ message: "Berhasil membuat akun!", data: { ...user, accessToken } })
     } catch (error) {
         console.log(error)
         return res.status(500).json({ status: 500, message: 'Terjadi Kesalahan Sistem!' })
@@ -130,7 +121,7 @@ const editProfile = async (req, res) => {
             }
         })
         const accessToken = jwt.sign({ id: user.id }, JWT_SECRET)
-        return res.status(200).json({ status: 200, message: 'Berhasil mengedit profil', data: { ...user, accessToken, role: user.role } })
+        return res.status(200).json({ status: 200, message: 'Berhasil mengedit profil', data: { ...user, accessToken } })
     } catch (error) {
         console.log(error)
         return res.status(500).json({ status: 500, message: 'Terjadi Kesalahan Sistem!' })
@@ -177,7 +168,7 @@ const editPassword = async (req, res) => {
             }
         })
         const accessToken = jwt.sign({ id: user.id }, JWT_SECRET)
-        return res.status(200).json({ status: 200, message: 'Password berhasil diubah', data: { ...updatedUser, accessToken, role: user.role } })
+        return res.status(200).json({ status: 200, message: 'Password berhasil diubah', data: { ...updatedUser, accessToken, } })
     } catch (error) {
         console.log(error)
         return res.status(500).json({ status: 500, message: 'Terjadi Kesalahan Sistem!' })
@@ -206,7 +197,8 @@ const updateSettingNotification = async (req, res) => {
                 shouldRemindTasks: !check.shouldRemindTasks
             }
         })
-        return res.status(200).json({ status: 200, message: user.shouldRemindTasks ? 'Notifikasi diaktifkan' : 'Notifikasi dinonaktifkan', data: user })
+        const accessToken = jwt.sign({ id: user.id }, JWT_SECRET)
+        return res.status(200).json({ status: 200, message: user.shouldRemindTasks ? 'Notifikasi diaktifkan' : 'Notifikasi dinonaktifkan', data: { ...user, accessToken } })
     } catch (error) {
         console.log(error)
         return res.status(500).json({ status: 500, message: 'Terjadi Kesalahan Sistem!' })
