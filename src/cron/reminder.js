@@ -41,9 +41,11 @@ export const remindTasks = async () => {
         const tasks = user.semesters.flatMap((semester) => semester.courses.flatMap((course) => course.tasks));
         return tasks.length > 0;
     })
+    console.log("TOTAL FILTERED USER : ", filteredUser.length)
 
     filteredUser.forEach(async (user) => {
         const tasks = user.semesters.flatMap((semester) => semester.courses.flatMap((course) => course.tasks));
+        console.log("TOTAL TASKS : ", tasks.length)
         await sendEmailTaskNotification(user.email, user.name, tasks);
     })
 };
