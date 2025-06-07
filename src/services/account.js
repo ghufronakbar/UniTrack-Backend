@@ -37,7 +37,7 @@ const login = async (req, res) => {
 const profile = async (req, res) => {
     const { id } = req.decoded
     try {
-        const data = await db.user.findFirst({
+        const data = await db.user.findUnique({
             where: {
                 id
             },
@@ -56,7 +56,7 @@ const profile = async (req, res) => {
         if (!data) {
             return res.status(404).json({ status: 404, message: 'Akun tidak ditemukan' })
         }
-        const accessToken = jwt.sign({ id: user.id }, JWT_SECRET)
+        const accessToken = jwt.sign({ id: data.id }, JWT_SECRET)
         return res.status(200).json({ status: 200, message: 'Account detail', data: { ...data, accessToken, } })
     }
     catch (error) {
@@ -186,20 +186,27 @@ const editPassword = async (req, res) => {
 
 const updateSettingNotification = async (req, res) => {
     const { id } = req.decoded
-    const { notification } = req.body
-    if (typeof notification !== "boolean") {
-        return res.status(400).json({ status: 400, message: 'Harap isi semua field' })
-    }
     try {
+        const check = await db.user.findUnique({
+            where: {
+                id
+            },
+            select: {
+                shouldRemindTasks: true
+            }
+        })
+        if (!check) {
+            return res.status(404).json({ status: 404, message: 'Pengguna tidak ditemukan' })
+        }
         const user = await db.user.update({
             where: {
                 id
             },
             data: {
-                shouldRemindTasks: notification
+                shouldRemindTasks: !check.shouldRemindTasks
             }
         })
-        return res.status(200).json({ status: 200, message: 'Berhasil mengubah notifikasi', data: user })
+        return res.status(200).json({ status: 200, message: user.shouldRemindTasks ? 'Notifikasi diaktifkan' : 'Notifikasi dinonaktifkan', data: user })
     } catch (error) {
         console.log(error)
         return res.status(500).json({ status: 500, message: 'Terjadi Kesalahan Sistem!' })

@@ -197,6 +197,7 @@ router.get("/:id", verification, getTask)
 router.post("/", verification, createTask)
 router.put("/:id", verification, editTask)
 router.delete("/:id", verification, deleteTask)
+router.patch('/:id', editMarkTask)
 
 
 export default router
