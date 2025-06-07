@@ -57,7 +57,11 @@ cron.schedule('0 * * * *', () => {
     }
 });
 
+export const cronTest = () => {
+    console.log("[CRON TEST HITTED] : ", new Date());
+}
+
 // TEST CRON EVERY 5 MINUTES
 cron.schedule('*/5 * * * *', () => {
-    console.log("[CRON TEST HITTED]")    
+    cronTest()
 });

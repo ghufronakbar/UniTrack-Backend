@@ -7,6 +7,7 @@ import semester from '../services/semester.js'
 import course from '../services/course.js'
 import task from '../services/task.js'
 import anaylitic from '../services/analytics.js'
+import cron from '../services/cron.js'
 
 router.use('/account', account);
 router.use("/image", image)
@@ -17,6 +18,8 @@ router.use("/course", course)
 router.use("/task", task)
 
 router.use('/analytics', anaylitic)
+
+router.use('/cron', cron)
 
 
 export default router
