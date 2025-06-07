@@ -56,3 +56,8 @@ cron.schedule('0 * * * *', () => {
         console.log('Error pada cron job pengingat tasks:', error);
     }
 });
+
+// TEST CRON EVERY 5 MINUTES
+cron.schedule('*/5 * * * *', () => {
+    console.log("[CRON TEST HITTED]")    
+});
