@@ -34,7 +34,7 @@ const analytic = async (req, res) => {
         const pendingTask = semesters.reduce((total, semester) => total + semester.courses.reduce((total, course) => total + course.tasks.filter(task => !task.isDone).length, 0), 0)
         const highPriorityTask = semesters.reduce((total, semester) => total + semester.courses.reduce((total, course) => total + course.tasks.filter(task => task.priority === 'HIGH').length, 0), 0)
 
-        const percentage = Number(Number(Number(completedTask) / Number(tasks)) * 100).toFixed(2) || 0
+        const percentage = Number(Number(Number(completedTask) / Number(tasks)) * 100) || 0
 
         const task = {
             total: tasks,

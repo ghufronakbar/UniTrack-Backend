@@ -107,12 +107,23 @@ const editMarkSemester = async (req, res) => {
     const { id } = req.params
     const { markAsDone } = req.body
     try {
+        const check = await db.semester.findUnique({
+            where: {
+                id
+            },
+            select: {
+                markAsDone: true
+            }
+        })
+        if (!id) {
+            return res.status(400).json({ status: 400, message: 'Semester tidak valid' })
+        }
         const semester = await db.semester.update({
             where: {
                 id
             },
             data: {
-                markAsDone
+                markAsDone: !check.markAsDone,
             }
         })
         return res.status(200).json({ status: 200, message: "Berhasil mengedit semester", data: semester })
