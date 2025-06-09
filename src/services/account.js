@@ -60,10 +60,6 @@ const register = async (req, res) => {
         return res.status(400).json({ status: 400, message: 'Harap isi semua field' })
     }
 
-
-    if (!validateEmail(email)) {
-        return res.status(400).json({ status: 400, message: 'Email tidak valid' })
-    }
     try {
         const checkEmail = await db.user.findUnique({
             where: {
