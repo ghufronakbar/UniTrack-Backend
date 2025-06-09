@@ -46,7 +46,7 @@ const analytic = async (req, res) => {
 
         const data = {
             count: {
-                semesters,
+                semesters: semesters.length,
                 courses,
                 tasks
             },
