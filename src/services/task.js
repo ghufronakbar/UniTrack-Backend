@@ -56,8 +56,8 @@ const getTask = async (req, res) => {
 }
 
 const createTask = async (req, res) => {
-    const { name, deadline, courseId, priority } = req.body
-    if (!name || !deadline || !courseId || !priority) {
+    const { name, deadline, courseId, priority, description } = req.body
+    if (!name || !deadline || !courseId || !priority || !description) {
         return res.status(400).json({ status: 400, message: 'Harap isi semua field' })
     }
     if (priority !== "LOW" && priority !== "MEDIUM" && priority !== "HIGH") {
@@ -85,6 +85,7 @@ const createTask = async (req, res) => {
                 courseId,
                 priority,
                 isDone: false,
+                description
             }
         })
         return res.status(200).json({ status: 200, message: "Berhasil membuat task", data: task })
@@ -96,8 +97,8 @@ const createTask = async (req, res) => {
 
 const editTask = async (req, res) => {
     const { id } = req.params
-    const { name, deadline, priority, courseId } = req.body
-    if (!name || !deadline || !priority) {
+    const { name, deadline, priority, courseId, description } = req.body
+    if (!name || !deadline || !priority || !courseId || !description) {
         return res.status(400).json({ status: 400, message: 'Harap isi semua field' })
     }
     if (priority !== "LOW" && priority !== "MEDIUM" && priority !== "HIGH") {
@@ -126,6 +127,7 @@ const editTask = async (req, res) => {
                 name,
                 deadline: new Date(deadline),
                 priority,
+                description
             }
         })
         return res.status(200).json({ status: 200, message: "Berhasil mengedit task", data: task })

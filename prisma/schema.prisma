@@ -55,9 +55,10 @@ model Course {
 }
 
 model Task {
-  id       String   @id @default(uuid())
-  name     String
-  deadline DateTime
+  id          String   @id @default(uuid())
+  name        String
+  description String   @db.Text()
+  deadline    DateTime
 
   priority Priority @default(LOW)
   isDone   Boolean  @default(false)
