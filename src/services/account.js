@@ -208,7 +208,7 @@ const updateSettingNotification = async (req, res) => {
 
 
 router.post("/login", login)
-router.post("/register", verification, register)
+router.post("/register", register)
 
 router.get("/", verification, profile)
 router.put("/", verification, editProfile)
